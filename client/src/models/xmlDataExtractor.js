@@ -1,10 +1,11 @@
 var fs = require("fs");
 
-var xmlDataExtractor = function(){
+var XmlDataExtractor = function(){
 
 }
 
-var xmlDataExtractor.prototype = {
+var XmlDataExtractor.prototype = {
+	
 	getDirectoryData: function(dir){
 		fileList = [];
 
@@ -17,4 +18,4 @@ var xmlDataExtractor.prototype = {
 	}
 }
 
-module.exports = xmlDataExtractor;
+module.exports = XmlDataExtractor;

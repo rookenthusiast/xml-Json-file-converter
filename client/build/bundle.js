@@ -63,24 +63,33 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+var XmlDataExtractor = __webpack_require__(1)
 
 var UI = function (){
- 
+ XmlDataExtractor = new XmlDataExtractor;
 }
 
-UI.prototype = {  
+UI.prototype = { 
+ 
 }
 
 module.exports = UI;
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: /home/cameron/Documents/glabs_digital_codetest/xml_extractor/client/src/models/xmlDataExtractor.js Unexpected token (7:20)\nYou may need an appropriate loader to handle this file type.\n| }\n| \n| var XmlDataExtractor.prototype = {\n| \t\n| \tgetDirectoryData: function(dir){");
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var UI = __webpack_require__(0);
