@@ -1,7 +1,7 @@
 var XmlDataExtractor = require('../models/xmlDataExtractor')
 
 var UI = function (){
- XmlDataExtractor = new XmlDataExtractor;
+ // XmlDataExtractor = new XmlDataExtractor;
 }
 
 UI.prototype = { 

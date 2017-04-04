@@ -73,7 +73,7 @@
 var XmlDataExtractor = __webpack_require__(1)
 
 var UI = function (){
- XmlDataExtractor = new XmlDataExtractor;
+ // XmlDataExtractor = new XmlDataExtractor;
 }
 
 UI.prototype = { 
@@ -86,7 +86,11 @@ module.exports = UI;
 /* 1 */
 /***/ (function(module, exports) {
 
-throw new Error("Module parse failed: /home/cameron/Documents/glabs_digital_codetest/xml_extractor/client/src/models/xmlDataExtractor.js Unexpected token (7:20)\nYou may need an appropriate loader to handle this file type.\n| }\n| \n| var XmlDataExtractor.prototype = {\n| \t\n| \tgetDirectoryData: function(dir){");
+var XmlDataExtractor = function(){
+	
+}
+
+
 
 /***/ }),
 /* 2 */
