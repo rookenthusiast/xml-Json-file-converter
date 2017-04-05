@@ -5,14 +5,14 @@ var databaseQuery = function(){
 }
 
 databaseQuery.prototype = {
-  all: function(){
+  all: function(collectionName){
   	console.log("ive been called")
     MongoClient.connect(this.url, function(err, db) {
 
       console.log("database connected at .all")
 
       if(err) { console.log("can't connect to url")} else {
-        var collection = db.collection('JsonFiles'); 
+        var collection = db.collection(collectionName); 
         collection.find().toArray(function(err, docs) {
           console.log(docs);
           db.close();
@@ -21,13 +21,11 @@ databaseQuery.prototype = {
     });
   },
 
-  add: function(fileToAdd, id){
+  add: function(fileToAdd, id, collectionName){
     MongoClient.connect(this.url, function(err, db) {
       if(db){
         console.log("database connected");
-        // var collection = db.collection('JsonFiles');
-        // collection.insert(fileToAdd);
-        db.collection('JsonFiles').save({"_id" : id,fileToAdd});
+        db.collection(collectionName).save({"_id" : id, "processed": fileToAdd});
         db.close();
         console.log("datbase closed");
       }

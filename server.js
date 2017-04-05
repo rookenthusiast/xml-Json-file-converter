@@ -33,11 +33,16 @@ var processDir = function(){
 
 
 						var jString = JSON.stringify(convertedXmlFile);
-						var replacedString = jString.replace(/\$/g, "replacedSymbol")
-						
+						var replacedString = jString.replace(/\$/g, "Access")
+						console.log(replacedString);
+						var jParsed = JSON.parse(replacedString);
+
+						var returnedDebtItem = jParsed.BACSDocument.Data[0].ARUDD[0].Advice[0].OriginatingAccountRecords[0].OriginatingAccountRecord[0].ReturnedDebitItem;
 						var newJsonObj = JSON.parse(replacedString);
-						console.log("adding new file")
-						dataBase.add(newJsonObj, id);
+						console.log(newJsonObj);
+						console.log("adding new JSON document")
+						dataBase.add(newJsonObj, id, "JsonFiles");
+						dataBase.add(returnedDebtItem, id, 'ReturnedDebitItems');
 						filesCompleted += 1;
 						} 
 
@@ -47,7 +52,8 @@ var processDir = function(){
 						if (filesCompleted === files.length){
 						console.log("total bytes of data:" + totalBytes);
 						console.log(filesCompleted + ": file conversions completed")
-						dataBase.all();
+						dataBase.all("JsonFiles");
+						dataBase.all("ReturnedDebitItems");
 						}	
 				})
 			})
@@ -68,20 +74,6 @@ var convertXmlToJson = function(xml){
     })
     return jsonObject;
 }
-
-// MongoClient.connect(this.url, function(err, db) {
-//       if(db){
-//         console.log("database connected");
-//         // var collection = db.collection('JsonFiles');
-//         // collection.insert(fileToAdd);
-//         db.collection('JsonFiles').insert(jsonFromXmlData[0]);
-//         db.close();
-//         console.log("database closed");
-//     	}
-//     })
-
-
-
 
 
 
