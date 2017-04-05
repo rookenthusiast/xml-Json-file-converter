@@ -4,12 +4,14 @@ var mv = require('mv');
 var parseString = require('xml2js').parseString;
 
 var XmlExtractor = function(){
-	this.databaseQuery = new DatabaseQuery()
+	this.database = new DatabaseQuery()
+	console.log(this.database);
 }
 
 XmlExtractor.prototype = {
 
 	processDir : function(){
+		var self = this;
 	console.log('finding directory')
 	var totalBytes = 0;
 	var dir = '/home/cameron/Documents/xml_data/xml/';
@@ -20,14 +22,29 @@ XmlExtractor.prototype = {
 			console.log('attempting to read files')
 			var filesCompleted = 0;
 			files.forEach(function(file){
+			
 				fs.readFile(dir + file, 'UTF-8',function(err,data){
-					console.log(data);
+					if (file === {}){ console.log("No files found")} else {
 					if (err) {
 						console.log("error reading file", err);
 						} else {
 						console.log("beginning conversion of: " + file);
 						var id = " " + file;
-						console.log(id);
+						
+					var convertXmlToJson = function(xml){
+						var jsonObject = null;
+					
+ 						parseString(xml, function(err, result){
+							if(err){
+								console.log("There's been an error converting data:", err)
+							} else {
+							var jsonData = result;
+							}
+							jsonObject = jsonData;
+    					})
+   						return jsonObject;
+					}
+						
 						var convertedXmlFile = convertXmlToJson(data);
 
 
@@ -40,8 +57,8 @@ XmlExtractor.prototype = {
 						var newJsonObj = JSON.parse(replacedString);
 						console.log(newJsonObj);
 						console.log("adding new JSON document")
-						dataBase.add(newJsonObj, id, "JsonFiles");
-						dataBase.add(returnedDebtItem, id, 'ReturnedDebitItems');
+						self.database.add(newJsonObj, id, "JsonFiles");
+						self.database.add(returnedDebtItem, id, 'ReturnedDebitItems');
 						filesCompleted += 1;
 
 
@@ -53,7 +70,9 @@ XmlExtractor.prototype = {
 								console.log("file has been archived");
 							}
 						})
-					} 
+					}
+				 
+
 
 						
 
@@ -61,30 +80,20 @@ XmlExtractor.prototype = {
 						if (filesCompleted === files.length){
 						console.log("total bytes of data:" + totalBytes);
 						console.log(filesCompleted + ": file conversions completed")
-						dataBase.all("JsonFiles");
-						dataBase.all("ReturnedDebitItems");
+						self.database.all("JsonFiles");
+						self.database.all("ReturnedDebitItems");
 
 
-						}	
+
+						}
+					}	
 				})
+			
 			})
 		}
 	})
-},
-
-convertXmlToJson: function(xml){
-	var jsonObject = null;
-
- 	parseString(xml, function(err, result){
-		if(err){
-			console.log("There's been an error converting data:", err)
-		} else {
-		var jsonData = result;
-		}
-		jsonObject = jsonData;
-    })
-    return jsonObject;
+	}
 }
-}
+
 
 module.exports = XmlExtractor;

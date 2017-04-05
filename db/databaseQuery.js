@@ -5,7 +5,7 @@ var databaseQuery = function(){
 }
 
 databaseQuery.prototype = {
-  all: function(collectionName){
+  all: function(collectionName, onQueryFinished){
   	console.log("ive been called")
     MongoClient.connect(this.url, function(err, db) {
 
@@ -13,12 +13,14 @@ databaseQuery.prototype = {
 
       if(err) { console.log("can't connect to url")} else {
         var collection = db.collection(collectionName); 
-        collection.find().toArray(function(err, docs) {
-          console.log(docs);
+          collection.find().toArray(function(err, docs){
+          if (!err){
+          onQueryFinished(docs)
           db.close();
-        });
+          }
+        })
       }
-    });
+    })
   },
 
   add: function(fileToAdd, id, collectionName){
