@@ -4,9 +4,13 @@ var app = express();
 var fs = require('fs');
 var parseString = require('xml2js').parseString;
 var DatabaseQuery = require('./db/databaseQuery')
+var MongoClient = require('mongodb').MongoClient
 
 var dataBase = new DatabaseQuery(); 
-this.url = 'mongodb://localhost:27017/companyFinances';
+// this.url = 'mongodb://localhost:27017/companyFinances';
+
+
+
 var processDir = function(){
 	console.log('finding directory')
 	var totalBytes = 0;
@@ -21,20 +25,30 @@ var processDir = function(){
 				fs.readFile(dir + '/' + file, 'UTF-8',function(err,data){
 					if (err) {
 						console.log("error reading file", err);
-					} else {
-						console.log("beginning conversion of: " + file)
+						} else {
+						console.log("beginning conversion of: " + file);
+						var id = " " + file;
+						console.log(id);
 						var convertedXmlFile = convertXmlToJson(data);
-						filesCompleted += 1;
-						dataBase.add(convertedXmlFile);
-						console.log("File has been added to Database");
 
-					}
-				totalBytes += data.length;
-				if (filesCompleted === files.length){
+
+						var jString = JSON.stringify(convertedXmlFile);
+						var replacedString = jString.replace(/\$/g, "replacedSymbol")
+						
+						var newJsonObj = JSON.parse(replacedString);
+						console.log("adding new file")
+						dataBase.add(newJsonObj, id);
+						filesCompleted += 1;
+						} 
+
+						
+
+						totalBytes += data.length;
+						if (filesCompleted === files.length){
 						console.log("total bytes of data:" + totalBytes);
 						console.log(filesCompleted + ": file conversions completed")
 						dataBase.all();
-					}
+						}	
 				})
 			})
 		}
@@ -42,15 +56,33 @@ var processDir = function(){
 }
 
 var convertXmlToJson = function(xml){
-	parseString(xml, function(err, result){
+	var jsonObject = null;
+
+ 	parseString(xml, function(err, result){
 		if(err){
 			console.log("There's been an error converting data:", err)
 		} else {
-		var jsonData = JSON.stringify(result);
-		return jsonData;
+		var jsonData = result;
 		}
+		jsonObject = jsonData;
     })
+    return jsonObject;
 }
+
+// MongoClient.connect(this.url, function(err, db) {
+//       if(db){
+//         console.log("database connected");
+//         // var collection = db.collection('JsonFiles');
+//         // collection.insert(fileToAdd);
+//         db.collection('JsonFiles').insert(jsonFromXmlData[0]);
+//         db.close();
+//         console.log("database closed");
+//     	}
+//     })
+
+
+
+
 
 
 processDir();
