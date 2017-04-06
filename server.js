@@ -17,7 +17,7 @@ app.get('/', function (req, res) {
 
 app.get('/loadReturnedDebitItems', function (req, res) {
   database.all('ReturnedDebitItems', function(docs) {
-  	res.send(docs);
+  	res.json(docs);
   })
 })
 

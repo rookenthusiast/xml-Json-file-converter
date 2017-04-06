@@ -80,8 +80,7 @@ XmlExtractor.prototype = {
 						if (filesCompleted === files.length){
 						console.log("total bytes of data:" + totalBytes);
 						console.log(filesCompleted + ": file conversions completed")
-						self.database.all("JsonFiles");
-						self.database.all("ReturnedDebitItems");
+					
 
 
 
